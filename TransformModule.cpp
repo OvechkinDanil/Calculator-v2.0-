@@ -10,9 +10,7 @@ double Transform::FindNumber(const char* string, int& index, int& spaces, error_
 	spaces = 0;
 	number = strtod(string + index, &endstr);
 	index += endstr - (string + index) - 1;
-	if (*endstr == 'e' || *endstr == 'E') {
-		curError = ERROR_INPUT;
-	}
+	
 	return number;
 }
 
@@ -100,7 +98,7 @@ double Transform::run(AvOperations& AvOp, error_t& curError)
 	const char* buf = str.c_str();
 
 
-	for (i = 0; curError == ERROR_OK && i < lengthBuf; i++) // ìá èñïîëüçîâàòü èòåðàòîð
+	for (i = 0; curError == ERROR_OK && i < lengthBuf; i++) // Ã¬Ã¡ Ã¨Ã±Ã¯Ã®Ã«Ã¼Ã§Ã®Ã¢Ã Ã²Ã¼ Ã¨Ã²Ã¥Ã°Ã Ã²Ã®Ã°
 	{
 
 		if (isspace(buf[i]))
