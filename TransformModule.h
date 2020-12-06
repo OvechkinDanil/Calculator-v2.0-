@@ -13,13 +13,15 @@ private:
 
 	int lengthBuf;
 
-	double FindNumber(const char* string, int& index, int& spaces, error_t& curError); 
+	string FindSubStrWithNum(string::iterator& it);
+
+	double FindNumber(string::iterator& it, int& spaces, error_t& curError);
 
 	error_t Calculate(AvOperations& AvOp, stack <double>& numStack, stack <string>& opStack);
 
-	string FindOperation(AvOperations& AvOp, const char* str, int& index, int& spaces, error_t& curError);
+	string FindOperation(AvOperations& AvOp, string::iterator& it, int& spaces);
 
-	bool IsUnaryMinus(const char* string, int& index, AvOperations& AvOp, int& space);
+	bool IsUnaryMinus(string::iterator& it, int& space);
 
 public:
 

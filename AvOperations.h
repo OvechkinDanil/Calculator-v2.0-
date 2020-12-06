@@ -15,7 +15,6 @@ class AvOperations
 private:
 	vector<HINSTANCE> instances;
 	map <string, IOperations*> AvailiableOperations;
-	error_t getClassFromDLL(WCHAR* DLLname);
 
 public:
 	AvOperations() {};

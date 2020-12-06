@@ -11,15 +11,6 @@ int main(int argc, char* argv[])
   string str;
   AvOperations AvOp;
   IOperations* curClass;
-  /*if (argc > 1)
-  {
-    ifstrfin(argv[1]);
-    if (!fin.is_open())
-    {
-      err.print(ERROR_OPEN_FILE);
-      return -1;
-    }
-  }*/
   
   string arg = argv[0];
   string path = arg.substr(0, arg.find_last_of('\\')) + "\\plugins";

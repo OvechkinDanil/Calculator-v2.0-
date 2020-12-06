@@ -5,20 +5,18 @@ error_t Process(AvOperations& AvOp, string str)
 	error_t err = ERROR_OK;
 	double result;
 	int length = str.length();
-	const char* c_str = str.c_str();
 	int brackets = 0, spaces = 0;
 
 	Transform tr(str, length);
 
-	for (int i = 0; i < length; i++)
+	for (string::iterator it = str.begin(); it != str.end(); ++it)
 	{
-		if (isspace(c_str[i]))
+		if (isspace(*it))
 			spaces++;
 
-		else if (c_str[i] == '(')
+		else if (*it == '(')
 			brackets++;
-
-		else if (c_str[i] == ')')
+		else if (*it == ')')
 			brackets--;
 
 		if (brackets < 0)
@@ -32,9 +30,9 @@ error_t Process(AvOperations& AvOp, string str)
 		return ERROR_BRACK;
 	}
 	
-	if (spaces == length)
+	if (spaces == str.length())
 	{
-		puts(c_str);
+		cout << str << endl;
 		return ERROR_OK;
 	}
 	
@@ -47,6 +45,5 @@ error_t Process(AvOperations& AvOp, string str)
 		return ERROR_INF;
 	
 	cout << str << " == " << result << endl;
-
 	return ERROR_OK;
 }

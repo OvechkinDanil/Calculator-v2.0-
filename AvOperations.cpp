@@ -37,29 +37,6 @@ error_t AvOperations::LoadOperations(string directory)
   return ERROR_OK;
 }
 
-//error_t AvOperations::getClassFromDLL(WCHAR* DLLname)
-//{
-//  IOperations* baseClass = NULL;
-//
-//  HINSTANCE hGetProcIDDLL = LoadLibrary(DLLname);
-//
-//  if (!hGetProcIDDLL) {
-//    return ERROR_OPEN_DLL;
-//  }
-//
-//  f_funci funci = (f_funci)GetProcAddress(hGetProcIDDLL, "GetClass");
-//  if (!funci) {
-//    return ERROR_GET_FACTORY_FUNC;
-//  }
-//
-//  baseClass = (IOperations*)funci();
-// 
-//  instances.push_back(hGetProcIDDLL);
-//
-//  AvailiableOperations.insert(make_pair(baseClass->GetOperationName(), baseClass));
-//
-//  return ERROR_OK;
-//}
 
 IOperations* AvOperations::getOperationClass(string op)
 {

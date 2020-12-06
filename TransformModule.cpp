@@ -1,16 +1,35 @@
 #include "TransformModule.h"
 
-double Transform::FindNumber(const char* string, int& index, int& spaces, error_t& curError)
+string Transform::FindSubStrWithNum(string::iterator& it)
+{
+	bool dot = false;
+	string s_num;
+
+	while (it != str.end() && !dot && (isdigit(*it) || *it == '.'))
+	{
+		s_num.push_back(*it);
+
+		if (*it == '.')
+			dot = true;
+		it++;
+	}
+	it--;
+	return s_num;
+}
+
+double Transform::FindNumber(string::iterator& it, int& spaces, error_t& curError)
 {
 	double number = 0;
-	char* endstr;
-	if (spaces != 0 && (index - spaces - 1) >= 0 && isdigit(string[index - spaces - 1])) {
+	string s_num;
+
+	if (spaces != 0 && (it - spaces - 1) >= str.begin() && isdigit(*(it - spaces - 1))) {
 		curError = ERROR_INPUT;
 	}
 	spaces = 0;
-	number = strtod(string + index, &endstr);
-	index += endstr - (string + index) - 1;
 	
+	s_num = FindSubStrWithNum(it);
+	number = atoi(s_num.c_str());
+
 	return number;
 }
 
@@ -59,28 +78,28 @@ error_t Transform::Calculate(AvOperations& AvOp, stack <double>& numStack, stack
 	return ERROR_OK;
 }
 
-string Transform::FindOperation(AvOperations& AvOp, const char* str, int& index, int& spaces, error_t& curError)
+string Transform::FindOperation(AvOperations& AvOp, string::iterator& it, int& spaces)
 {
 	string op;
 
 	spaces = 0;
 
-	while (index < lengthBuf && !isspace(str[index]) && !isdigit(str[index]) && str[index] != '(' && str[index] != ')')
+	while (it != str.end() && !isspace(*it) && !isdigit(*it) && *it != '(' && *it != ')')
 	{
-		op.push_back(str[index]);
+		op.push_back(*it);
 		if (AvOp.isOperation(op))
 		{
 			return op;
 		}
-		index++;
+		it++;
 	}
-	index--;
+	it--;
 	return op;
 }
 
-bool Transform::IsUnaryMinus(const char* string, int& index, AvOperations& AvOp, int& space) 
+bool Transform::IsUnaryMinus(string::iterator& it, int& space)
 {
-	return ((index - space == 0) || (string[index - space - 1] == '(') || !isdigit(string[index - space - 1])); 
+	return ((it - space == str.begin()) || (*(it - space - 1) == '(') || !isdigit(*(it - space - 1)));
 }
 
 double Transform::run(AvOperations& AvOp, error_t& curError)
@@ -95,41 +114,40 @@ double Transform::run(AvOperations& AvOp, error_t& curError)
 	int i,
 		  space = 0;
 	double number, result;
-	const char* buf = str.c_str();
 
 
-	for (i = 0; curError == ERROR_OK && i < lengthBuf; i++) // ìá èñïîëüçîâàòü èòåðàòîð
+	for (string::iterator it = str.begin(); it != str.end(); it++)
 	{
 
-		if (isspace(buf[i]))
+		if (isspace(*it))
 		{
 			space++;
 			continue;
 		}
 
-		else if (isdigit(buf[i])) 
+		else if (isdigit(*it)) 
 		{
-			number = FindNumber(buf, i, space, curError);
+			number = FindNumber(it, space, curError);
 			numStack.push(number);
 			continue;
 		}
 
-		else if (buf[i] == '-' && AvOp.isOperation("-") && IsUnaryMinus(buf, i, AvOp, space))
+		else if (*it == '-' && AvOp.isOperation("-") && IsUnaryMinus(it, space))
 		{
 			space = 0;
 			numStack.push(0);
 			opStack.push("-");
 		}
 
-		else if (buf[i] == '(')
+		else if (*it == '(')
 		{
 			opStack.push("(");
 			space = 0;
 		}
 
-		else if (buf[i] == ')')
+		else if (*it == ')')
 		{
-			if (buf[i - space - 1] == '(')
+			if (*(it-space-1) == '(')
 			{
 				curError = ERROR_INPUT;
 				return 0;
@@ -146,7 +164,7 @@ double Transform::run(AvOperations& AvOp, error_t& curError)
 
 		else
 		{
-			curOp = FindOperation(AvOp, buf, i, space, curError);
+			curOp = FindOperation(AvOp, it, space);
 
 			if (curError != ERROR_OK)
 				return 0;
