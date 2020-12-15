@@ -7,7 +7,10 @@ void Calculator::run(Errors& err)
     processString();
 
     if (curError != ERROR_OK)
+    {
       err.print(curError);
+      curError = ERROR_OK;
+    }  
 
   }
 }
