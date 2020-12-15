@@ -2,6 +2,7 @@
 #include "Errors.h"
 #include "AvOperations.h"
 #include <stack>
+#include <string>
 
 using namespace std;
 
@@ -11,21 +12,37 @@ private:
 
 	string str;
 
-	int lengthBuf;
+	string curToken;
 
-	string FindSubStrWithNum(string::iterator& it);
+	string prevToken;
 
-	double FindNumber(string::iterator& it, int& spaces, error_t& curError);
+	AvOperations AvOp;
 
-	error_t Calculate(AvOperations& AvOp, stack <double>& numStack, stack <string>& opStack);
+	stack <double> numStack;
 
-	string FindOperation(AvOperations& AvOp, string::iterator& it, int& spaces);
+	stack <string> opStack;
 
-	bool IsUnaryMinus(string::iterator& it, int& space);
+	void parseString(error_t& curError);
+
+	double findResult(error_t& curError);
+
+	string SeparateToken(string& delimiter);
+
+	error_t Calculate();
+
+	bool IsUnaryMinus();
+
+	void processWithOperation(error_t& curError);
+
+	void processWithRightBrack(error_t& curError);
+
+	bool isLeftBracket() { return curToken == "("; }
+
+	bool isRightBracket() { return curToken == ")"; }
 
 public:
 
-	Transform(string _buf, int _length) { str = _buf; lengthBuf = _length; }; 
+	Transform(string _buf) : str(_buf) { }
 
 	double run(AvOperations& AvOp, error_t& curError); // transform str to tokens
 

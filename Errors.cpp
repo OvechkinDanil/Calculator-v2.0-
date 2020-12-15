@@ -19,22 +19,14 @@ Errors::Errors()
 	ErrorsList[ERROR_GET_FACTORY_FUNC] = "ERROR: CANNOT GET FACTORY FUNC FROM DLL\n";
 	ErrorsList[ERROR_FIND_OP] = "ERROR: THIS OPERATION/FUNCTION IS NOT LOADED FROM DLL\n";
 
-	curError = ERROR_OK;
 }
 
-void Errors::checkError()
-{
-	if (curError != ERROR_OK)
-	{
-		this->print();
-		curError = ERROR_OK;
-	}
-}
 
-void Errors::print()
+
+void Errors::print(error_t err)
 {
-	if (ErrorsList.find(curError) != ErrorsList.end())
+	if (ErrorsList.find(err) != ErrorsList.end())
 	{
-		std::cout << ErrorsList.find(curError)->second;
+		std::cout << ErrorsList.find(err)->second << std::endl;
 	}
 }

@@ -26,12 +26,9 @@ typedef enum
 class Errors 
 {
 private:
-  error_t curError;
   std::map<error_t, std::string> ErrorsList;
-  void print();
 public:
   Errors();
-  void setCurError(error_t c_err) { curError = c_err; };
-  void checkError();
+  void print(error_t err);
   ~Errors() {};
 };
