@@ -49,7 +49,7 @@ bool Calculator::checkBrackets()
 
   numRightBrackets = numberOfSubString(")");
 
-  if (numLeftBrackets + numRightBrackets != 0)
+  if (numLeftBrackets - numRightBrackets != 0)
   {
     curError = ERROR_BRACK;
     return false;
